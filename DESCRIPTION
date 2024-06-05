@@ -1,0 +1,16 @@
+Package: rtemisbio
+Title: rtemis Bioinformatic
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "E.D.", family = "Gennatas", role = c("aut", "cre"),
+           email = "gennatas@gmail.com",
+           comment = c(ORCID = "0000-0001-9280-3609"))
+Description: Bioinformatics utilities
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports:
+    rtemis
+Suggests:
+    bionaRt
