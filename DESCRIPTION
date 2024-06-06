@@ -13,6 +13,8 @@ RoxygenNote: 7.3.1
 Imports:
     rtemis
 Suggests:
-    biomaRt
+    biomaRt,
+    testthat (>= 3.0.0)
 Remotes: 
     egenn/rtemis
+Config/testthat/edition: 3
