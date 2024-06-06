@@ -1,4 +1,4 @@
-# seq_ops.R
+# gene2sequence.R
 # ::rtemisbio::
 # 2024 EDG rtemis.org
 
@@ -26,6 +26,10 @@ gene2sequence <- function(
 
   # Arguments ----
   stopifnot(is.character(gene))
+
+  if (verbosity > 0) {
+    msg20("Getting sequence for gene ", hilite(gene), "...")
+  }
 
   # Mart ----
   mart <- biomaRt::useMart(
@@ -64,7 +68,8 @@ gene2sequence <- function(
     # Count number of sequences returned that are not "Sequence unavailable"
     nretrieved <- sum(sequence$coding != "Sequence unavailable")
     msg20(
-      "Retrieved ", bold(nretrieved), "/", nrow(sequence), " sequences."
+      "Database returned sequences for ", bold(nretrieved), "/", nrow(sequence),
+      " transcripts."
     )
   }
 
