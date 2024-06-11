@@ -1,6 +1,6 @@
 Package: rtemisbio
 Title: rtemis Bioinformatic
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "E.D.", family = "Gennatas", role = c("aut", "cre"),
            email = "gennatas@gmail.com",
