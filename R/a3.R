@@ -2,7 +2,9 @@
 # ::rtemisbio::
 # 2024 EDG rtemis.org
 
-#' Convert amino acid + annotations to JSON
+#' Create an `a3` object
+#' 
+#' Creates an `a3` object given amino acid sequence and annotations.
 #' 
 #' @details 
 #' We choose to keep NULL elements as empty lists in JSON, since we want users to be
@@ -12,7 +14,9 @@
 #' @param seq Character: Amino acid sequence.
 #' @param site Named list of vectors of integer indices of sites, e.g.
 #' `list("N-terminal repeat" = c(46, 47, 52), "Microtubule binding domain" = c(244, 245, 246))`
-#' @param region Named list of character vectors with index range of regions in format
+#' @param region Named list of integer indices,
+#' e.g. `list("Phosphodegron" = c(46, 47, 48, 49, 50, 51), "KXGS" = c(259, 260, 261, 262))`
+#' or character vectors with index range of regions in format
 #' `start:end`, e.g. `list(Phosphodegron = c("46:51", "149:154"), KXGS = c("259:262", "290:293"))`
 #' @param ptm Named list of vectors with indices of post-translational modifications, e.g.
 #' `list("Phosphorylation" = c(17, 18, 29, 30), "Acetylation" = c(148, 150, 163))`
@@ -20,6 +24,8 @@
 #' `list(CTSL = c(54, 244, 319), CTSD = c(340, 391, 426))`
 #' @param variant List of lists with variant information. Each list must contain a
 #' `Position` element
+#' @param uniprotid Character: Uniprot ID.
+#' @param reference Character: Link to reference (journal publication, preprint, etc.)
 #'
 #' @author EDG
 #' @return `a3` object
@@ -132,7 +138,7 @@ as.a3.default <- function(x) {
 #' as.a3.list method
 #'
 #' @param x List: Named list with elements `Sequence`, `Annotations`, `UniprotID`.
-#' `Annotations` is a named list with possible elements `Site`, `Region`, `PTM`, 
+#' `Annotations` is a named list with possible elements `Site`, `Region`, `PTM`,
 #' `Cleavage_site`, `Variant`.
 #'
 #' @author EDG
@@ -152,7 +158,7 @@ as.a3.list <- function(x) {
   inherits_test(x$UniprotID, "character")
   inherits_test(x$Reference, "character")
 
-  # Convert to `a3` object
+  # Create `a3` object
   a3 <- toa3(
     seq = x$Sequence,
     site = x$Annotations$Site,
@@ -170,7 +176,7 @@ as.a3.list <- function(x) {
 #' Plot method for `a3` object
 #'
 #' @param x `a3` object.
-#' @param ... Additional arguments passed to `rtemis::dplot3_protein`.
+#' @param ... Additional arguments passed to [rtemis::dplot3_protein].
 #'
 #' @author EDG
 #' @export
@@ -178,3 +184,63 @@ as.a3.list <- function(x) {
 plot.a3 <- function(x, ...) {
   dplot3_protein(x, ...)
 } # /rtemisbio::plot.a3
+
+
+#' Convert integer range to character with colon separator
+#'
+#' @param x Integer vector. Must be consecutive integers from lowest to highest.
+#'
+#' @author EDG
+#' @return Character with colon separator.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' x <- 34:42
+#' int2range(x)
+#' int2range(28:34)
+#' int2range(c(3, 4, 5, 6))
+#' # This will throw an error:
+#' int2range(c(3, 4, 5, 6, 8))
+#' }
+int2range <- function(x) {
+  # Check that x consists of consecutive integers from loweest to highest
+  isTRUE(all.equal(x, seq(min(x), max(x)))) || stop("x must be consecutive integers from lowest to highest.")
+
+  paste0(x[1], ":", x[length(x)])
+
+} # /rtemisbio::int2range
+
+
+#' Summary method for `a3` object
+#'
+#' @param object `a3` object.
+#'
+#' @author EDG
+#' @export
+
+summary.a3 <- function(object, ...) {
+  cat("Sequence length: ", length(object$Sequence), "\n")
+  if (!is.null(object$UniprotID)) {
+    cat("Uniprot ID: ", object$UniprotID, "\n")
+  }
+  if (!is.null(object$Reference)) {
+    cat("Reference: ", object$Reference, "\n")
+  }
+  cat("Annotations:\n")
+  if (length(object$Annotations$Site) > 0) {
+    cat(length(object$Annotations$Site), "site annotations.\n")
+  }
+  if (length(object$Annotations$Region) > 0) {
+    cat(length(object$Annotations$Region), "region annotations.\n")
+  }
+  if (length(object$Annotations$PTM) > 0) {
+    cat(length(object$Annotations$PTM), "PTM annotations.\n")
+  }
+  if (length(object$Annotations$Cleavage_site) > 0) {
+    cat(length(object$Annotations$Cleavage_site), "cleavage site annotations.\n")
+  }
+  if (length(object$Annotations$Variant) > 0) {
+    cat(length(object$Annotations$Variant), "variant annotations.\n")
+  }
+} # /rtemisbio::summary.a3

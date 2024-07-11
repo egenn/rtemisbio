@@ -2,7 +2,7 @@
 % Please edit documentation in R/a3.R
 \name{toa3}
 \alias{toa3}
-\title{Convert amino acid + annotations to JSON}
+\title{Create an \code{a3} object}
 \usage{
 toa3(
   seq,
@@ -21,7 +21,9 @@ toa3(
 \item{site}{Named list of vectors of integer indices of sites, e.g.
 \code{list("N-terminal repeat" = c(46, 47, 52), "Microtubule binding domain" = c(244, 245, 246))}}
 
-\item{region}{Named list of character vectors with index range of regions in format
+\item{region}{Named list of integer indices,
+e.g. \code{list("Phosphodegron" = c(46, 47, 48, 49, 50, 51), "KXGS" = c(259, 260, 261, 262))}
+or character vectors with index range of regions in format
 \code{start:end}, e.g. \code{list(Phosphodegron = c("46:51", "149:154"), KXGS = c("259:262", "290:293"))}}
 
 \item{ptm}{Named list of vectors with indices of post-translational modifications, e.g.
@@ -32,12 +34,16 @@ toa3(
 
 \item{variant}{List of lists with variant information. Each list must contain a
 \code{Position} element}
+
+\item{uniprotid}{Character: Uniprot ID.}
+
+\item{reference}{Character: Link to reference (journal publication, preprint, etc.)}
 }
 \value{
 \code{a3} object
 }
 \description{
-Convert amino acid + annotations to JSON
+Creates an \code{a3} object given amino acid sequence and annotations.
 }
 \details{
 We choose to keep NULL elements as empty lists in JSON, since we want users to be

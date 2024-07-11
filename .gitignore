@@ -1,5 +1,15 @@
 # Dev
 /dev/
 
+# Mac OS
+.DS_Store
+
 # VS Code
 *.code-workspace
+docs
+altdoc/freeze.rds
+^_quarto
+_quarto/
+pkgdown/
+altdoc/
+*.yml

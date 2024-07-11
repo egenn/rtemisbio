@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{\code{a3} object.}
 
-\item{...}{Additional arguments passed to \code{rtemis::dplot3_protein}.}
+\item{...}{Additional arguments passed to \link[rtemis:dplot3_protein]{rtemis::dplot3_protein}.}
 }
 \description{
 Plot method for \code{a3} object
