@@ -215,15 +215,15 @@ plot.xt <- function(x, ...) {
   dplot3_xt(x, ...)
 } # /rtemisbio::plot.xt
 
-#' Aggregate method for `xt` object
-#'
-#' @param x `xt` object.
-#' @param group Character: Grouping variable.
-#' @param fn Function: Function to apply to each group.
-#'
-#' @author EDG
-#' @export
-aggregate.xt <- function(x, group, fn = mean) {
-  inherits_test(x, "xt")
-  # Aggregate all y and y2 timeseries by grouping in `group`
-}
+# #' Aggregate method for `xt` object
+# #'
+# #' @param x `xt` object.
+# #' @param group Character: Grouping variable.
+# #' @param fn Function: Function to apply to each group.
+# #'
+# #' @author EDG
+# #' @export
+# aggregate.xt <- function(x, group, fn = mean) {
+#   inherits_test(x, "xt")
+#   # Aggregate all y and y2 timeseries by grouping in `group`
+# }
