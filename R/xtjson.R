@@ -61,7 +61,7 @@ read.xtjson <- function(filepath, verbosity = 0L) {
   dependency_check("jsonlite")
 
   # Normalize path ----
-  filepath <- normalizePath(filepath, mustWork = TRUE)
+  filepath <- normalizePath(filepath)
 
   # Check file ----
   if (!file.exists(filepath)) {
@@ -73,7 +73,13 @@ read.xtjson <- function(filepath, verbosity = 0L) {
     path = filepath,
     simplifyVector = TRUE,
     simplifyMatrix = FALSE
-  ) |> as.xt()
+  )
+  # Convert empty lists to NULL
+  emptylist.idi <- sapply(xt, is.list) & sapply(xt, length) == 0
+  xt[emptylist.idi] <- NULL
+
+  # Convert to `xt` object
+  xt <- as.xt(xt)
 
   if (verbosity > 0) {
     cat("Read", filepath, ":\n", sep = "")
