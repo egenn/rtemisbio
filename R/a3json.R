@@ -61,7 +61,7 @@ read.a3json <- function(filepath, verbosity = 0L) {
   dependency_check("jsonlite")
 
   # Normalize path ----
-  filepath <- normalizePath(filepath, mustWork = TRUE)
+  filepath <- normalizePath(filepath)
 
   # Check file ----
   if (!file.exists(filepath)) {
