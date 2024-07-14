@@ -6,11 +6,12 @@
 #'
 #' Creates an `xt` object from time series data.
 #'
-#' @param x Datetime vector or list of datetime vectors.
-#' @param y Numeric vector or list of numeric vectors. When plotted, these will correspond to the
+#' @param x Named list of datetime vectors.
+#' @param y Named list of numeric vectors: When plotted, these will correspond to the
 #' left y-axis.
-#' @param y2 Numeric vector or list of numeric vectors. When plotted, these will correspond to the
+#' @param y2 Named list of numeric vectors: When plotted, these will correspond to the
 #' right y-axis.
+#' @param group Named list of factors: Grouping variable(s).
 #' @param xunits Character: Units for `x`.
 #' @param yunits Character: Units for `y`.
 #' @param y2units Character: Units for `y2`.
@@ -88,57 +89,62 @@ toxt <- function(
 #' @export
 
 print.xt <- function(x, head.n = 10, ...) {
-  cat(".:", orange("xt", bold = TRUE), " timeseries object\n", sep = "")
-  # Length of timeseries
+  cat("  .:", orange("xt", bold = TRUE), " timeseries object\n", sep = "")
+  cat("  ----------------------\n")
+
   length_x <- length(x$x)
   cat(
-    "  There ", ngettext(length_x, "is ", "are "), hilite(length_x),
-    " time ", ngettext(length_x, "vector", "vectors"), " with ",
+    "  ", hilite(length_x),
+    " x time ", ngettext(length_x, "vector", "vectors"), " of ",
     ngettext(length_x, "length ", "lengths "),
-    hilite(paste(sapply(x$x, length), collapse = ", ")), ".\n",
+    hilite(paste(sapply(x$x, length), collapse = ", ")), "\n",
     sep = ""
   )
 
   length_x2 <- length(x$x2)
   if (length_x2 > 0) {
     cat(
-      "  There ", ngettext(length_x2, "is ", "are "), hilite(length_x2),
-      " time ", ngettext(length_x2, "vector", "vectors"), " with ",
+      "  ", hilite(length_x2),
+      " x2 time ", ngettext(length_x2, "vector", "vectors"), " of ",
       ngettext(length_x2, "length ", "lengths "),
-      hilite(paste(sapply(x$x2, length), collapse = ", ")), ".\n",
+      hilite(paste(sapply(x$x2, length), collapse = ", ")), "\n",
       sep = ""
     )
   }
 
-  # Number of y and y2 timeseries
   length_y <- length(x$y)
   cat(
-    "  There ", ngettext(length_y, "is ", "are "), hilite(length_y), " y timeseries: ",
-    hilite(names(x$y)), "\n", sep = ""
+    "  ", hilite(length_y), " y timeseries: ",
+    paste(hilite(names(x$y)), collapse = ", "), "\n",
+    sep = ""
   )
-  # if (!is.null(x$yunits)) {
-  #   cat("  Units of y timeseries:", hilite(x$yunits), "\n")
-  # }
+
+  if (!is.null(x$yunits)) {
+    cat("    Units of y timeseries:", paste(hilite(x$yunits), collapse = ", "), "\n")
+  }
+
   length_y2 <- length(x$y2)
   if (length_y2 > 0) {
     cat(
-      "  There ", ngettext(length_y2, "is ", "are "), hilite(length_y2), " y2 timeseries: ",
-      hilite(names(x$y2)), "\n", sep = ""
+      "  ", hilite(length_y2), " y2 timeseries: ",
+      paste(hilite(names(x$y2)), collapse = ", "), "\n",
+      sep = ""
     )
   }
-  
-  # if (!is.null(x$y2units)) {
-  #   cat("  Units of y2 timeseries:", hilite(x$y2units), "\n")
-  # }
+
+  if (!is.null(x$y2units)) {
+    cat("    Units of y2 timeseries:", paste(hilite(x$y2units), collapse = ", "), "\n")
+  }
+
   if (!is.null(x$group)) {
     cat(
-      "  There ", ngettext(length(x$group), "is ", "are "), hilite(length(x$group)), " groupings: ",
-      hilite(names(x$group)), "\n",
+      "  ", hilite(length(x$group)), ngettext(length(x$group), " grouping", " groupings"), ": ",
+      paste(hilite(names(x$group)), collapse = ", "), "\n",
       sep = ""
     )
   }
   if (!is.null(x$Reference)) {
-    cat("    Reference:", hilite(x$Reference), "\n")
+    cat("  Reference:", hilite(x$Reference), "\n")
   }
 } # /rtemisbio::print.xt
 
@@ -215,15 +221,88 @@ plot.xt <- function(x, ...) {
   dplot3_xt(x, ...)
 } # /rtemisbio::plot.xt
 
-# #' Aggregate method for `xt` object
-# #'
-# #' @param x `xt` object.
-# #' @param group Character: Grouping variable.
-# #' @param fn Function: Function to apply to each group.
-# #'
-# #' @author EDG
-# #' @export
-# aggregate.xt <- function(x, group, fn = mean) {
-#   inherits_test(x, "xt")
-#   # Aggregate all y and y2 timeseries by grouping in `group`
-# }
+#' Aggregate method for `xt` object
+#'
+#' @param x `xt` object.
+#' @param group Character: Grouping variable.
+#' @param fn Function: Function to apply to each group.
+#' @param backend Character: "base", "data.table", or "dplyr"; backend to use for aggregation.
+#' @param ... Additional arguments passed to `fn`.
+#'
+#' @author EDG
+#' @export
+aggregate.xt <- function(x, groupname, fn = mean, backend = getOption("rt.backend", "base"), ...) {
+  inherits_test(x, "xt")
+  # Get name of fn
+  fn_name <- deparse(substitute(fn))
+  # Aggregate all y and y2 timeseries by grouping in `group`
+  if (backend == "base") {
+    # base
+    y_agg <- lapply(seq_along(x$y), function(i) {
+      out <- aggregate(list(y = x$y[[i]]), by = list(x$group[[groupname]]), FUN = fn, ...)
+      names(out) <- c(groupname, fn_name)
+      out
+    })
+
+    if (!is.null(x$y2)) {
+      y2_agg <- lapply(seq_along(x$y2), function(i) {
+        out <- aggregate(list(y2 = x$y2[[i]]), by = list(x$group[[groupname]]), FUN = fn, ...)
+        names(out) <- c(groupname, paste0(fn_name))
+        out
+      })
+    }
+  } else if (backend == "data.table") {
+    # data.table
+    y_agg <- lapply(seq_along(x$y), function(i) {
+      data.table::data.table(y = x$y[[i]])[, list(agg = fn(y)), by = x$group[[groupname]]] |>
+        data.table::setorder() |>
+        data.table::setnames(c(groupname, fn_name))
+    })
+    if (!is.null(x$y2)) {
+      y2_agg <- lapply(seq_along(x$y2), function(i) {
+        data.table::data.table(y2 = x$y2[[i]])[, list(agg = fn(y2)), by = x$group[[groupname]]] |>
+          data.table::setorder() |>
+          data.table::setnames(c(groupname, fn_name))
+      })
+    }
+  } else if (backend == "dplyr") {
+    # dplyr
+    y_agg <- lapply(seq_along(x$y), function(i) {
+      dplyr::tibble(y = x$y[[i]]) |>
+        dplyr::group_by(Group = x$group[[groupname]]) |>
+        dplyr::summarize(!!fn_name := fn(y, ...))
+    })
+    if (!is.null(x$y2)) {
+      y2_agg <- lapply(seq_along(x$y2), function(i) {
+        dplyr::tibble(y2 = x$y2[[i]]) |>
+          dplyr::group_by(Group = x$group[[groupname]]) |>
+          dplyr::summarize(!!fn_name := fn(y2, ...))
+      })
+    }
+  }
+
+  out <- list(y = y_agg)
+  if (!is.null(x$y2)) {
+    out$y2 <- y2_agg
+  }
+  out
+} # /rtemisbio::aggregate.xt
+
+
+#' Calculate light/dark ratio for `xt` object
+#'
+#' Calculates light/dark ratio for each `y` and `y2` timeseries in an `xt` object.
+#'
+#' @param x `xt` object.
+#' @param fn Function: Function to apply to each group.
+#' @param backend Character: "base", "data.table", or "dplyr"; backend to use for aggregation.
+#' @param ... Additional arguments passed to `fn`.
+#'
+#' @author EDG
+#' @export
+#' @return data.frame with columns for group and summary statistic.
+light_dark_ratio <- function(x, groupname = "Lights", fn = mean, backend = getOption("rt.backend", "data.table"), ...) {
+  # Check types
+  inherits_test(x, "xt")
+  aggregate(x, groupname = groupname, fn = fn, backend = backend, ...)
+} # /rtemisbio::light_dark_ratio

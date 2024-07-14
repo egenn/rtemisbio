@@ -18,13 +18,15 @@ toxt(
 )
 }
 \arguments{
-\item{x}{Datetime vector or list of datetime vectors.}
+\item{x}{Named list of datetime vectors.}
 
-\item{y}{Numeric vector or list of numeric vectors. When plotted, these will correspond to the
+\item{y}{Named list of numeric vectors: When plotted, these will correspond to the
 left y-axis.}
 
-\item{y2}{Numeric vector or list of numeric vectors. When plotted, these will correspond to the
+\item{y2}{Named list of numeric vectors: When plotted, these will correspond to the
 right y-axis.}
+
+\item{group}{Named list of factors: Grouping variable(s).}
 
 \item{xunits}{Character: Units for \code{x}.}
 
