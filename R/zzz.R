@@ -28,7 +28,7 @@ rtemisbio.version <- packageVersion("rtemisbio")
 #' @description
 #' Bioinformatics utilities
 #' @name rtemisbio-package
-#' @import rtemis
+#' @import rtemis data.table
 "_PACKAGE"
 
 NULL
