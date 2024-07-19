@@ -9,8 +9,9 @@ toxt(
   y,
   x2 = NULL,
   y2 = NULL,
-  group = NULL,
+  zt = NULL,
   shade = NULL,
+  group = NULL,
   xunits = NULL,
   yunits = NULL,
   y2units = NULL,
@@ -25,6 +26,9 @@ left y-axis.}
 
 \item{y2}{Named list of numeric vectors: When plotted, these will correspond to the
 right y-axis.}
+
+\item{zt}{Numeric vector: Zeitgeber time. If provided, this will be used to label x-axis ticks.
+Assumes a single datetime vector in \code{x}. Elements in \code{zt} must correspond to elements in \code{x}.}
 
 \item{group}{Named list of factors: Grouping variable(s).}
 

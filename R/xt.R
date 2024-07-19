@@ -11,6 +11,8 @@
 #' left y-axis.
 #' @param y2 Named list of numeric vectors: When plotted, these will correspond to the
 #' right y-axis.
+#' @param zt Numeric vector: Zeitgeber time. If provided, this will be used to label x-axis ticks.
+#' Assumes a single datetime vector in `x`. Elements in `zt` must correspond to elements in `x`.
 #' @param group Named list of factors: Grouping variable(s).
 #' @param xunits Character: Units for `x`.
 #' @param yunits Character: Units for `y`.
@@ -26,8 +28,9 @@ toxt <- function(
     y,
     x2 = NULL,
     y2 = NULL,
-    group = NULL,
+    zt = NULL,
     shade = NULL,
+    group = NULL,
     xunits = NULL,
     yunits = NULL,
     y2units = NULL,
@@ -67,8 +70,9 @@ toxt <- function(
     x2 = x2,
     y = y,
     y2 = y2,
-    group = group,
+    zt = zt,
     shade = shade,
+    group = group,
     xunits = xunits,
     yunits = yunits,
     y2units = y2units,
@@ -199,6 +203,8 @@ as.xt.list <- function(x) {
     x = x$x,
     y = x$y,
     y2 = x$y2,
+    zt = x$zt,
+    shade = x$shade,
     group = x$group,
     xunits = x$xunits,
     yunits = x$yunits,
