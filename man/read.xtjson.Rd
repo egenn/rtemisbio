@@ -17,6 +17,12 @@ read.xtjson(filepath, verbosity = 0L)
 \description{
 Read \code{xt} object from JSON file
 }
+\details{
+Note that factors saved under \code{group} are written as character by \link{write.xtjson} and
+when they are read back in, they are converted back to factors using \link{factor}. This means that
+the levels will be set alphabetically. If needed, reorder them after reading in the JSON file
+using \link{factor}.
+}
 \author{
 EDG
 }
