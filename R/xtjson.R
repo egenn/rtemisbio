@@ -46,6 +46,11 @@ write.xtjson <- function(x, filepath, overwrite = FALSE) {
 
 #' Read `xt` object from JSON file
 #'
+#' @details Note that factors saved under `group` are written as character by [write.xtjson] and
+#' when they are read back in, they are converted back to factors using [factor]. This means that
+#' the levels will be set alphabetically. If needed, reorder them after reading in the JSON file
+#' using [factor].
+#' 
 #' @param filepath Character: Path to JSON file.
 #' @param verbosity Integer: if greater than 0, print messages.
 #'
@@ -77,6 +82,11 @@ read.xtjson <- function(filepath, verbosity = 0L) {
   # Convert empty lists to NULL
   emptylist.idi <- sapply(xt, is.list) & sapply(xt, length) == 0
   xt[emptylist.idi] <- NULL
+
+  # Convert groups to factors
+  if (!is.null(xt$group)) {
+    xt$group <- lapply(xt$group, factor)
+  }
 
   # Convert to `xt` object
   xt <- as.xt(xt)
