@@ -24,11 +24,17 @@ toxt(
 \item{y}{Named list of numeric vectors: When plotted, these will correspond to the
 left y-axis.}
 
+\item{x2}{Named list of datetime vectors: When plotted, these will correspond to the
+right x-axis. If not provided, \code{x} will be used for both \code{y} and \code{y2}.}
+
 \item{y2}{Named list of numeric vectors: When plotted, these will correspond to the
 right y-axis.}
 
 \item{zt}{Numeric vector: Zeitgeber time. If provided, this will be used to label x-axis ticks.
 Assumes a single datetime vector in \code{x}. Elements in \code{zt} must correspond to elements in \code{x}.}
+
+\item{shade}{Binary vector: \code{0} indicates no shading, \code{1} indicates shading. If provided,
+this will be used to shade the plot.}
 
 \item{group}{Named list of factors: Grouping variable(s).}
 

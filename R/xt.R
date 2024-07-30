@@ -9,10 +9,14 @@
 #' @param x Named list of datetime vectors.
 #' @param y Named list of numeric vectors: When plotted, these will correspond to the
 #' left y-axis.
+#' @param x2 Named list of datetime vectors: When plotted, these will correspond to the
+#' right x-axis. If not provided, `x` will be used for both `y` and `y2`.
 #' @param y2 Named list of numeric vectors: When plotted, these will correspond to the
 #' right y-axis.
 #' @param zt Numeric vector: Zeitgeber time. If provided, this will be used to label x-axis ticks.
 #' Assumes a single datetime vector in `x`. Elements in `zt` must correspond to elements in `x`.
+#' @param shade Binary vector: `0` indicates no shading, `1` indicates shading. If provided,
+#' this will be used to shade the plot.
 #' @param group Named list of factors: Grouping variable(s).
 #' @param xunits Character: Units for `x`.
 #' @param yunits Character: Units for `y`.
@@ -211,6 +215,7 @@ as.xt.list <- function(x) {
     y2units = x$y2units,
     reference = x$reference
   )
+  
   return(xt)
 } # /rtemisbio::as.xt.list
 
