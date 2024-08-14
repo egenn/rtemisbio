@@ -12,6 +12,7 @@ toa3(
   clv = NULL,
   variant = NULL,
   uniprotid = NULL,
+  description = NULL,
   reference = NULL
 )
 }
@@ -36,6 +37,8 @@ or character vectors with index range of regions in format
 \code{Position} element}
 
 \item{uniprotid}{Character: Uniprot ID.}
+
+\item{description}{Character: Description of the data / experiment.}
 
 \item{reference}{Character: Link to reference (journal publication, preprint, etc.)}
 }

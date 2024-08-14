@@ -25,6 +25,7 @@
 #' @param variant List of lists with variant information. Each list must contain a
 #' `Position` element
 #' @param uniprotid Character: Uniprot ID.
+#' @param description Character: Description of the data / experiment.
 #' @param reference Character: Link to reference (journal publication, preprint, etc.)
 #'
 #' @author EDG
@@ -33,7 +34,7 @@
 
 toa3 <- function(
     seq, site = NULL, region = NULL, ptm = NULL, clv = NULL,
-    variant = NULL, uniprotid = NULL, reference = NULL) {
+    variant = NULL, uniprotid = NULL, description = NULL, reference = NULL) {
   # Check types
   inherits_test(seq, "character")
   inherits_test(site, "list")
@@ -42,6 +43,7 @@ toa3 <- function(
   inherits_test(clv, "list")
   inherits_test(variant, "list")
   inherits_test(uniprotid, "character")
+  inherits_test(description, "character")
   inherits_test(reference, "character")
 
   # Convert to JSON
@@ -55,6 +57,7 @@ toa3 <- function(
       Variant = variant
     ),
     UniprotID = uniprotid,
+    Description = description,
     Reference = reference
   )
   class(a3) <- c("a3", "list")
@@ -73,6 +76,9 @@ toa3 <- function(
 
 print.a3 <- function(x, head.n = 10, ...) {
   cat(".:", orange("a3", bold = TRUE), " object (Amino Acid Annotation)\n", sep = "")
+  if (!is.null(x$Description)) {
+    cat("  Description:", hilite(x$Description), "\n")
+  }
   if (!is.null(x$UniprotID)) {
     cat("   Uniprot ID:", hilite(x$UniprotID), "\n")
   }
@@ -156,6 +162,7 @@ as.a3.list <- function(x) {
   inherits_test(x$Annotations$Cleavage_site, "list")
   inherits_test(x$Annotations$Variant, "list")
   inherits_test(x$UniprotID, "character")
+  inherits_test(x$Description, "character")
   inherits_test(x$Reference, "character")
 
   # Create `a3` object
@@ -167,6 +174,7 @@ as.a3.list <- function(x) {
     clv = x$Annotations$Cleavage_site,
     variant = x$Annotations$Variant,
     uniprotid = x$UniprotID,
+    description = x$Description,
     reference = x$Reference
   )
   return(a3)
@@ -223,6 +231,9 @@ summary.a3 <- function(object, ...) {
   cat("Sequence length: ", length(object$Sequence), "\n")
   if (!is.null(object$UniprotID)) {
     cat("Uniprot ID: ", object$UniprotID, "\n")
+  }
+  if (!is.null(object$Description)) {
+    cat("Description: ", object$Description, "\n")
   }
   if (!is.null(object$Reference)) {
     cat("Reference: ", object$Reference, "\n")
