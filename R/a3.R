@@ -145,7 +145,7 @@ as.a3.default <- function(x) {
 #'
 #' @param x List: Named list with elements `Sequence`, `Annotations`, `UniprotID`.
 #' `Annotations` is a named list with possible elements `Site`, `Region`, `PTM`,
-#' `Cleavage_site`, `Variant`.
+#' `Cleavage_site`, `Variant`, `Description`, `Reference`.
 #'
 #' @author EDG
 #' @return `a3` object.

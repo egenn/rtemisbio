@@ -21,6 +21,7 @@
 #' @param xunits Character: Units for `x`.
 #' @param yunits Character: Units for `y`.
 #' @param y2units Character: Units for `y2`.
+#' @param description Character: Description of the data / experiment.
 #' @param reference Character: Link to reference (journal publication, preprint, etc.)
 #'
 #' @author EDG
@@ -38,6 +39,7 @@ toxt <- function(
     xunits = NULL,
     yunits = NULL,
     y2units = NULL,
+    description = NULL,
     reference = NULL) {
   # Check types
   # inherits_test(x, "list")
@@ -46,6 +48,7 @@ toxt <- function(
   inherits_test(xunits, "character")
   inherits_test(yunits, "character")
   inherits_test(y2units, "character")
+  inherits_test(description, "character")
   inherits_test(reference, "character")
 
   if (!is.list(x)) {
@@ -75,12 +78,13 @@ toxt <- function(
     y = y,
     y2 = y2,
     zt = zt,
-    shade = shade,
-    group = group,
+    Shade = shade,
+    Group = group,
     xunits = xunits,
     yunits = yunits,
     y2units = y2units,
-    reference = reference
+    Description = description,
+    Reference = reference
   )
 
   class(xt) <- c("xt", "list")
@@ -98,8 +102,9 @@ toxt <- function(
 
 print.xt <- function(x, head.n = 10, ...) {
   cat("  .:", orange("xt", bold = TRUE), " timeseries object\n", sep = "")
-  cat("  ----------------------\n")
-
+  if (!is.null(x$Description)) {
+    cat("  Description:", hilite(x$Description), "\n")
+  }
   length_x <- length(x$x)
   cat(
     "  ", hilite(length_x),
@@ -144,10 +149,10 @@ print.xt <- function(x, head.n = 10, ...) {
     cat("    Units of y2 timeseries:", paste(hilite(x$y2units), collapse = ", "), "\n")
   }
 
-  if (!is.null(x$group)) {
+  if (!is.null(x$Group)) {
     cat(
-      "  ", hilite(length(x$group)), ngettext(length(x$group), " grouping", " groupings"), ": ",
-      paste(hilite(names(x$group)), collapse = ", "), "\n",
+      "  ", hilite(length(x$Group)), ngettext(length(x$Group), " grouping", " groupings"), ": ",
+      paste(hilite(names(x$Group)), collapse = ", "), "\n",
       sep = ""
     )
   }
@@ -185,7 +190,8 @@ as.xt.default <- function(x) {
 
 #' as.xt.list method
 #'
-#' @param x List: Named list with elements `x`, `y`, `y2`, `xunits`, `yunits`, `y2units`, `reference`.
+#' @param x List: Named list with elements `x`, `y`, `y2`, `xunits`, `yunits`, `y2units`, 
+#' `Description`, `Reference`.
 #'
 #' @author EDG
 #' @return `xt` object.
@@ -200,7 +206,8 @@ as.xt.list <- function(x) {
   inherits_test(x$xunits, "character")
   inherits_test(x$yunits, "character")
   inherits_test(x$y2units, "character")
-  inherits_test(x$reference, "character")
+  inherits_test(x$Description, "character")
+  inherits_test(x$Reference, "character")
 
   # Create `xt` object
   xt <- toxt(
@@ -208,12 +215,13 @@ as.xt.list <- function(x) {
     y = x$y,
     y2 = x$y2,
     zt = x$zt,
-    shade = x$shade,
-    group = x$group,
+    shade = x$Shade,
+    group = x$Group,
     xunits = x$xunits,
     yunits = x$yunits,
     y2units = x$y2units,
-    reference = x$reference
+    description = x$Description,
+    reference = x$Reference
   )
   
   return(xt)
@@ -250,14 +258,14 @@ aggregate.xt <- function(x, groupname, fn = mean, backend = getOption("rt.backen
   if (backend == "base") {
     # base
     y_agg <- lapply(seq_along(x$y), function(i) {
-      out <- aggregate(list(y = x$y[[i]]), by = list(x$group[[groupname]]), FUN = fn, ...)
+      out <- aggregate(list(y = x$y[[i]]), by = list(x$Group[[groupname]]), FUN = fn, ...)
       names(out) <- c(groupname, fn_name)
       out
     })
 
     if (!is.null(x$y2)) {
       y2_agg <- lapply(seq_along(x$y2), function(i) {
-        out <- aggregate(list(y2 = x$y2[[i]]), by = list(x$group[[groupname]]), FUN = fn, ...)
+        out <- aggregate(list(y2 = x$y2[[i]]), by = list(x$Group[[groupname]]), FUN = fn, ...)
         names(out) <- c(groupname, paste0(fn_name))
         out
       })
@@ -265,13 +273,13 @@ aggregate.xt <- function(x, groupname, fn = mean, backend = getOption("rt.backen
   } else if (backend == "data.table") {
     # data.table
     y_agg <- lapply(seq_along(x$y), function(i) {
-      data.table::data.table(y = x$y[[i]])[, list(agg = fn(y)), by = x$group[[groupname]]] |>
+      data.table::data.table(y = x$y[[i]])[, list(agg = fn(y)), by = x$Group[[groupname]]] |>
         data.table::setorder() |>
         data.table::setnames(c(groupname, fn_name))
     })
     if (!is.null(x$y2)) {
       y2_agg <- lapply(seq_along(x$y2), function(i) {
-        data.table::data.table(y2 = x$y2[[i]])[, list(agg = fn(y2)), by = x$group[[groupname]]] |>
+        data.table::data.table(y2 = x$y2[[i]])[, list(agg = fn(y2)), by = x$Group[[groupname]]] |>
           data.table::setorder() |>
           data.table::setnames(c(groupname, fn_name))
       })
@@ -280,13 +288,13 @@ aggregate.xt <- function(x, groupname, fn = mean, backend = getOption("rt.backen
     # dplyr
     y_agg <- lapply(seq_along(x$y), function(i) {
       dplyr::tibble(y = x$y[[i]]) |>
-        dplyr::group_by(Group = x$group[[groupname]]) |>
+        dplyr::group_by(Group = x$Group[[groupname]]) |>
         dplyr::summarize(!!fn_name := fn(y, ...))
     })
     if (!is.null(x$y2)) {
       y2_agg <- lapply(seq_along(x$y2), function(i) {
         dplyr::tibble(y2 = x$y2[[i]]) |>
-          dplyr::group_by(Group = x$group[[groupname]]) |>
+          dplyr::group_by(Group = x$Group[[groupname]]) |>
           dplyr::summarize(!!fn_name := fn(y2, ...))
       })
     }
