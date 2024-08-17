@@ -15,6 +15,7 @@ toxt(
   xunits = NULL,
   yunits = NULL,
   y2units = NULL,
+  description = NULL,
   reference = NULL
 )
 }
@@ -43,6 +44,8 @@ this will be used to shade the plot.}
 \item{yunits}{Character: Units for \code{y}.}
 
 \item{y2units}{Character: Units for \code{y2}.}
+
+\item{description}{Character: Description of the data / experiment.}
 
 \item{reference}{Character: Link to reference (journal publication, preprint, etc.)}
 }

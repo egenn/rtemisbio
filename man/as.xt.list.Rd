@@ -7,7 +7,8 @@
 \method{as.xt}{list}(x)
 }
 \arguments{
-\item{x}{List: Named list with elements \code{x}, \code{y}, \code{y2}, \code{xunits}, \code{yunits}, \code{y2units}, \code{reference}.}
+\item{x}{List: Named list with elements \code{x}, \code{y}, \code{y2}, \code{xunits}, \code{yunits}, \code{y2units},
+\code{Description}, \code{Reference}.}
 }
 \value{
 \code{xt} object.

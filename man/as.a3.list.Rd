@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{List: Named list with elements \code{Sequence}, \code{Annotations}, \code{UniprotID}.
 \code{Annotations} is a named list with possible elements \code{Site}, \code{Region}, \code{PTM},
-\code{Cleavage_site}, \code{Variant}.}
+\code{Cleavage_site}, \code{Variant}, \code{Description}, \code{Reference}.}
 }
 \value{
 \code{a3} object.
