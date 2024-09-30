@@ -32,7 +32,7 @@
 #' @return `a3` object
 #' @export
 
-toa3 <- function(
+a3 <- function(
     seq, site = NULL, region = NULL, ptm = NULL, clv = NULL,
     variant = NULL, uniprotid = NULL, description = NULL, reference = NULL) {
   # Check types
@@ -62,7 +62,7 @@ toa3 <- function(
   )
   class(a3) <- c("a3", "list")
   return(a3)
-} # /rtemisbio::toa3
+} # /rtemisbio::a3
 
 
 #' Print method for `a3` object
@@ -166,7 +166,7 @@ as.a3.list <- function(x) {
   inherits_check(x$Reference, "character")
 
   # Create `a3` object
-  a3 <- toa3(
+  a3 <- a3(
     seq = x$Sequence,
     site = x$Annotations$Site,
     region = x$Annotations$Region,
