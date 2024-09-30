@@ -12,8 +12,8 @@
 
 write.a3json <- function(x, filepath, overwrite = FALSE) {
   # Check types ----
-  inherits_test(x, "a3")
-  inherits_test(filepath, "character")
+  inherits_check(x, "a3")
+  inherits_check(filepath, "character")
 
   # Check dependencies ----
   dependency_check("jsonlite")
@@ -55,7 +55,7 @@ write.a3json <- function(x, filepath, overwrite = FALSE) {
 
 read.a3json <- function(filepath, verbosity = 0L) {
   # Check types ----
-  inherits_test(filepath, "character")
+  inherits_check(filepath, "character")
 
   # Check dependencies ----
   dependency_check("jsonlite")

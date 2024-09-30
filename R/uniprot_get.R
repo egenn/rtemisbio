@@ -20,7 +20,7 @@ uniprot_get <- function(accession,
                         baseURL = "https://rest.uniprot.org/uniprotkb",
                         verbosity = 1) {
   # Check types
-  inherits_test(accession, "character")
+  inherits_check(accession, "character")
 
   path <- paste0(baseURL, "/", accession, ".fasta")
   dat <- seqinr::read.fasta(path, seqtype = "AA")

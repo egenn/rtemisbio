@@ -42,14 +42,14 @@ toxt <- function(
     description = NULL,
     reference = NULL) {
   # Check types
-  # inherits_test(x, "list")
-  # inherits_test(y, "list")
-  # inherits_test(y2, "list")
-  inherits_test(xunits, "character")
-  inherits_test(yunits, "character")
-  inherits_test(y2units, "character")
-  inherits_test(description, "character")
-  inherits_test(reference, "character")
+  # inherits_check(x, "list")
+  # inherits_check(y, "list")
+  # inherits_check(y2, "list")
+  inherits_check(xunits, "character")
+  inherits_check(yunits, "character")
+  inherits_check(y2units, "character")
+  inherits_check(description, "character")
+  inherits_check(reference, "character")
 
   if (!is.list(x)) {
     x <- list(x)
@@ -183,7 +183,7 @@ as.xt <- function(x) {
 #' @export
 
 as.xt.default <- function(x) {
-  inherits_test(x, "list")
+  inherits_check(x, "list")
   as.xt.list(x)
 } # /rtemisbio::as.xt
 
@@ -199,15 +199,15 @@ as.xt.default <- function(x) {
 
 as.xt.list <- function(x) {
   # Check types
-  inherits_test(x, "list")
-  # inherits_test(x$x, "list")
-  # inherits_test(x$y, "list")
-  # inherits_test(x$y2, "list")
-  inherits_test(x$xunits, "character")
-  inherits_test(x$yunits, "character")
-  inherits_test(x$y2units, "character")
-  inherits_test(x$Description, "character")
-  inherits_test(x$Reference, "character")
+  inherits_check(x, "list")
+  # inherits_check(x$x, "list")
+  # inherits_check(x$y, "list")
+  # inherits_check(x$y2, "list")
+  inherits_check(x$xunits, "character")
+  inherits_check(x$yunits, "character")
+  inherits_check(x$y2units, "character")
+  inherits_check(x$Description, "character")
+  inherits_check(x$Reference, "character")
 
   # Create `xt` object
   xt <- toxt(
@@ -251,7 +251,7 @@ plot.xt <- function(x, ...) {
 #' @author EDG
 #' @export
 aggregate.xt <- function(x, groupname, fn = mean, backend = getOption("rt.backend", "base"), ...) {
-  inherits_test(x, "xt")
+  inherits_check(x, "xt")
   # Get name of fn
   fn_name <- deparse(substitute(fn))
   # Aggregate all y and y2 timeseries by grouping in `group`
@@ -322,6 +322,6 @@ aggregate.xt <- function(x, groupname, fn = mean, backend = getOption("rt.backen
 #' @return data.frame with columns for group and summary statistic.
 light_dark_ratio <- function(x, groupname = "Lights", fn = mean, backend = getOption("rt.backend", "data.table"), ...) {
   # Check types
-  inherits_test(x, "xt")
+  inherits_check(x, "xt")
   aggregate(x, groupname = groupname, fn = fn, backend = backend, ...)
 } # /rtemisbio::light_dark_ratio

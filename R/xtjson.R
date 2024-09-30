@@ -12,8 +12,8 @@
 
 write.xtjson <- function(x, filepath, overwrite = FALSE) {
   # Check types ----
-  inherits_test(x, "xt")
-  inherits_test(filepath, "character")
+  inherits_check(x, "xt")
+  inherits_check(filepath, "character")
 
   # Check dependencies ----
   dependency_check("jsonlite")
@@ -60,7 +60,7 @@ write.xtjson <- function(x, filepath, overwrite = FALSE) {
 
 read.xtjson <- function(filepath, verbosity = 0L) {
   # Check types ----
-  inherits_test(filepath, "character")
+  inherits_check(filepath, "character")
 
   # Check dependencies ----
   dependency_check("jsonlite")

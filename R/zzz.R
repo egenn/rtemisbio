@@ -10,7 +10,7 @@ bold <- getFromNamespace("bold", "rtemis")
 italic <- getFromNamespace("italic", "rtemis")
 orange <- getFromNamespace("orange", "rtemis")
 green <- getFromNamespace("green", "rtemis")
-inherits_test <- getFromNamespace("inherits_test", "rtemis")
+inherits_check <- getFromNamespace("inherits_check", "rtemis")
 dependency_check <- getFromNamespace("dependency_check", "rtemis")
 
 rtemisbio.version <- packageVersion("rtemisbio")

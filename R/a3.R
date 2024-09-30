@@ -36,15 +36,15 @@ toa3 <- function(
     seq, site = NULL, region = NULL, ptm = NULL, clv = NULL,
     variant = NULL, uniprotid = NULL, description = NULL, reference = NULL) {
   # Check types
-  inherits_test(seq, "character")
-  inherits_test(site, "list")
-  inherits_test(region, "list")
-  inherits_test(ptm, "list")
-  inherits_test(clv, "list")
-  inherits_test(variant, "list")
-  inherits_test(uniprotid, "character")
-  inherits_test(description, "character")
-  inherits_test(reference, "character")
+  inherits_check(seq, "character")
+  inherits_check(site, "list")
+  inherits_check(region, "list")
+  inherits_check(ptm, "list")
+  inherits_check(clv, "list")
+  inherits_check(variant, "list")
+  inherits_check(uniprotid, "character")
+  inherits_check(description, "character")
+  inherits_check(reference, "character")
 
   # Convert to JSON
   a3 <- list(
@@ -136,7 +136,7 @@ as.a3 <- function(x) {
 #' @export
 
 as.a3.default <- function(x) {
-  inherits_test(x, "list")
+  inherits_check(x, "list")
   as.a3.list(x)
 } # /rtemisbio::as.a3
 
@@ -153,17 +153,17 @@ as.a3.default <- function(x) {
 
 as.a3.list <- function(x) {
   # Check types
-  inherits_test(x, "list")
-  inherits_test(x$Sequence, "character")
-  inherits_test(x$Annotations, "list")
-  inherits_test(x$Annotations$Site, "list")
-  inherits_test(x$Annotations$Region, "list")
-  inherits_test(x$Annotations$PTM, "list")
-  inherits_test(x$Annotations$Cleavage_site, "list")
-  inherits_test(x$Annotations$Variant, "list")
-  inherits_test(x$UniprotID, "character")
-  inherits_test(x$Description, "character")
-  inherits_test(x$Reference, "character")
+  inherits_check(x, "list")
+  inherits_check(x$Sequence, "character")
+  inherits_check(x$Annotations, "list")
+  inherits_check(x$Annotations$Site, "list")
+  inherits_check(x$Annotations$Region, "list")
+  inherits_check(x$Annotations$PTM, "list")
+  inherits_check(x$Annotations$Cleavage_site, "list")
+  inherits_check(x$Annotations$Variant, "list")
+  inherits_check(x$UniprotID, "character")
+  inherits_check(x$Description, "character")
+  inherits_check(x$Reference, "character")
 
   # Create `a3` object
   a3 <- toa3(
