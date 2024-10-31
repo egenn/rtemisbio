@@ -18,4 +18,6 @@ Suggests:
     jsonlite,
     seqinr,
     testthat (>= 3.0.0)
+Additional_repositories:
+    https://egenn.r-universe.dev
 Config/testthat/edition: 3
