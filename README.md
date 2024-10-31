@@ -32,3 +32,7 @@ You can install `rtemisbio` from `r-universe` or using `pak`, `remotes`, or `dev
   ```r
   devtools::install_github("egenn/rtemisbio")
   ```
+
+## Documentation
+
+work in progress: [rtemis.org/rtemisbio](https://rtemis.org/rtemisbio/)
