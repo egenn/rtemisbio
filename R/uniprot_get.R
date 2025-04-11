@@ -9,7 +9,8 @@
 #' Default = "https://rest.uniprot.org/uniprotkb"
 #' @param verbose Logical: If TRUE, print messages to console
 #'
-#' @return List with two elements: Annotation & Sequence
+#' @return List with three elements: Identifier, Annotation, and Sequence.
+#' 
 #' @author E.D. Gennatas
 #' @export
 #' @examples
@@ -20,7 +21,7 @@ uniprot_get <- function(accession,
                         baseURL = "https://rest.uniprot.org/uniprotkb",
                         verbosity = 1) {
   # Check types
-  inherits_check(accession, "character")
+  check_inherits(accession, "character")
 
   path <- paste0(baseURL, "/", accession, ".fasta")
   dat <- seqinr::read.fasta(path, seqtype = "AA")

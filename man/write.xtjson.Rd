@@ -11,6 +11,9 @@ write.xtjson(x, filepath, overwrite = FALSE)
 
 \item{filepath}{Character: Path to save JSON file.}
 }
+\value{
+Nothing. Writes JSON file.
+}
 \description{
 Write \code{xt} object to JSON file
 }

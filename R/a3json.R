@@ -6,17 +6,19 @@
 #'
 #' @param x `a3` object, as created by `as.a3()`.
 #' @param filepath Character: Path to save JSON file.
+#' 
+#' @return Nothing. Writes JSON file.
 #'
 #' @author EDG
 #' @export
 
 write.a3json <- function(x, filepath, overwrite = FALSE) {
   # Check types ----
-  inherits_check(x, "a3")
-  inherits_check(filepath, "character")
+  check_inherits(x, "a3")
+  check_inherits(filepath, "character")
 
   # Check dependencies ----
-  dependency_check("jsonlite")
+  check_dependencies("jsonlite")
 
   # Normalize path ----
   filepath <- normalizePath(filepath, mustWork = FALSE)
@@ -49,16 +51,17 @@ write.a3json <- function(x, filepath, overwrite = FALSE) {
 #' @param filepath Character: Path to JSON file.
 #' @param verbosity Integer: if greater than 0, print messages.
 #'
-#' @author EDG
 #' @return `a3` object.
+#' 
+#' @author EDG
 #' @export
 
 read.a3json <- function(filepath, verbosity = 0L) {
   # Check types ----
-  inherits_check(filepath, "character")
+  check_inherits(filepath, "character")
 
   # Check dependencies ----
-  dependency_check("jsonlite")
+  check_dependencies("jsonlite")
 
   # Normalize path ----
   filepath <- normalizePath(filepath)
@@ -79,6 +82,5 @@ read.a3json <- function(filepath, verbosity = 0L) {
     cat("Read", filepath, ":\n", sep = "")
     print(a3)
   }
-
-  return(a3)
+  a3
 } # /rtemisbio::read.a3json

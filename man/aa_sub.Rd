@@ -8,10 +8,10 @@ aa_sub(x, substitutions, verbosity = 1)
 }
 \arguments{
 \item{x}{Character or charactr vector: Amino acid sequence. e.g. \code{"ARND"} or
-\code{c("A", "R", "N", "D")}}
+\code{c("A", "R", "N", "D")}.}
 
 \item{substitutions}{Character vector: Substitutions to perform in the format
-"OriginalPositionNew", e.g. \code{c("C291A", "C322A")}}
+"OriginalPositionNew", e.g. \code{c("C291A", "C322A")}.}
 }
 \value{
 Character vector with substitutions performed.

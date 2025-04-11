@@ -4,12 +4,13 @@
 
 #' Get AlphaFold info for a given UniProt ID
 #'
-#' @param uniprotid Character: UniProt ID
+#' @param uniprotid Character: UniProt ID.
 #'
-#' @return data frame with AlphaFold info
+#' @return data frame with AlphaFold info.
 #'
 #' @author EDG
 #' @export
+
 get_alphafold <- function(uniprotid) {
   url <- paste0("https://www.alphafold.ebi.ac.uk/api/prediction/", uniprotid)
   headers <- c(

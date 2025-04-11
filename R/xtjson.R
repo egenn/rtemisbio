@@ -6,17 +6,19 @@
 #'
 #' @param x `xt` object, as created by [toxt] or [as.xt].
 #' @param filepath Character: Path to save JSON file.
+#' 
+#' @return Nothing. Writes JSON file.
 #'
 #' @author EDG
 #' @export
 
 write.xtjson <- function(x, filepath, overwrite = FALSE) {
   # Check types ----
-  inherits_check(x, "xt")
-  inherits_check(filepath, "character")
+  check_inherits(x, "xt")
+  check_inherits(filepath, "character")
 
   # Check dependencies ----
-  dependency_check("jsonlite")
+  check_dependencies("jsonlite")
 
   # Normalize path ----
   filepath <- normalizePath(filepath, mustWork = FALSE)
@@ -54,16 +56,17 @@ write.xtjson <- function(x, filepath, overwrite = FALSE) {
 #' @param filepath Character: Path to JSON file.
 #' @param verbosity Integer: if greater than 0, print messages.
 #'
-#' @author EDG
 #' @return `xt` object.
+#' 
+#' @author EDG
 #' @export
 
 read.xtjson <- function(filepath, verbosity = 0L) {
   # Check types ----
-  inherits_check(filepath, "character")
+  check_inherits(filepath, "character")
 
   # Check dependencies ----
-  dependency_check("jsonlite")
+  check_dependencies("jsonlite")
 
   # Normalize path ----
   filepath <- normalizePath(filepath)
@@ -95,6 +98,5 @@ read.xtjson <- function(filepath, verbosity = 0L) {
     cat("Read", filepath, ":\n", sep = "")
     print(xt)
   }
-
-  return(xt)
+  xt
 } # /rtemisbio::read.xtjson

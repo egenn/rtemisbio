@@ -105,7 +105,7 @@ pmi <- function(x, y, data) {
   px <- sum(x) / length(data)
   py <- sum(y) / length(data)
   pxy <- sum(x * y) / length(data)
-  return(log2(pxy / (px * py)))
+  log2(pxy / (px * py))
 }
 
 #' Pairwise PTM similarity
@@ -113,7 +113,7 @@ pmi <- function(x, y, data) {
 #' @param x List of PTM annotations
 #' @param metric Character: "jaccard", "dice", "overlap", "cosine", "pmi"
 #'
-#' @return Table of pairwise similarity scores.
+#' @return Matrix of pairwise similarity scores.
 #'
 #' @author EDG
 #' @export
@@ -122,17 +122,6 @@ pairwise_similarity <- function(x, metric = "jaccard", sequence = NULL) {
   # Apply similarity metric on all pairs of elements in x
   n <- length(x)
   sim <- matrix(NA, nrow = n, ncol = n)
-  # for (i in 1:(n - 1)) {
-  #   for (j in (i + 1):n) {
-  #     sim[i, j] <- switch(metric,
-  #       "jaccard" = jaccard_index(x[[i]], x[[j]]),
-  #       "dice" = dice_coefficient(x[[i]], x[[j]]),
-  #       "overlap" = overlap_coefficient(x[[i]], x[[j]]),
-  #       "cosine" = cosine_similarity2(x[[i]], x[[j]]),
-  #       "pmi" = pmi(x[[i]], x[[j]], x)
-  #     )
-  #   }
-  # }
   for (i in seq_along(x)) {
     for (j in seq_along(x)) {
       sim[i, j] <- switch(metric,

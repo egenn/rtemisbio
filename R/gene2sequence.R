@@ -9,8 +9,9 @@
 #' @param biomart Character: Biomart name.
 #' @param host Character: Host address.
 #' 
-#' @author EDG
 #' @return data.frame with columns "gene", "ensembl_transcript_id" and "sequence".
+#' 
+#' @author EDG
 #' @export
 
 gene2sequence <- function(
@@ -22,7 +23,7 @@ gene2sequence <- function(
     verbosity = 1) {
   
   # Check dependencies ----
-  dependency_check("biomaRt")
+  check_dependencies("biomaRt")
 
   # Arguments ----
   stopifnot(is.character(gene))
@@ -78,7 +79,5 @@ gene2sequence <- function(
     ensembl_transcript_id = sequence$ensembl_transcript_id,
     sequence = sequence$coding
   )
-
-  return(seq)
-
+  seq
 } # rtemisbio::gene2sequence

@@ -28,23 +28,24 @@
 #' @param description Character: Description of the data / experiment.
 #' @param reference Character: Link to reference (journal publication, preprint, etc.)
 #'
-#' @author EDG
 #' @return `a3` object
+#' 
+#' @author EDG
 #' @export
 
 a3 <- function(
     seq, site = NULL, region = NULL, ptm = NULL, clv = NULL,
     variant = NULL, uniprotid = NULL, description = NULL, reference = NULL) {
   # Check types
-  inherits_check(seq, "character")
-  inherits_check(site, "list")
-  inherits_check(region, "list")
-  inherits_check(ptm, "list")
-  inherits_check(clv, "list")
-  inherits_check(variant, "list")
-  inherits_check(uniprotid, "character")
-  inherits_check(description, "character")
-  inherits_check(reference, "character")
+  check_inherits(seq, "character")
+  check_inherits(site, "list")
+  check_inherits(region, "list")
+  check_inherits(ptm, "list")
+  check_inherits(clv, "list")
+  check_inherits(variant, "list")
+  check_inherits(uniprotid, "character")
+  check_inherits(description, "character")
+  check_inherits(reference, "character")
 
   # Convert to JSON
   a3 <- list(
@@ -61,7 +62,7 @@ a3 <- function(
     Reference = reference
   )
   class(a3) <- c("a3", "list")
-  return(a3)
+  a3
 } # /rtemisbio::a3
 
 
@@ -70,6 +71,8 @@ a3 <- function(
 #' @method print a3
 #' @param x `a3` object.
 #' @param ... Not used.
+#' 
+#' @return `a3` object, invisibly.
 #'
 #' @author EDG
 #' @export
@@ -112,6 +115,7 @@ print.a3 <- function(x, head.n = 10, ...) {
   if (!is.null(x$Reference)) {
     cat("    Reference:", hilite(x$Reference), "\n")
   }
+  invisible(x)
 } # /rtemisbio::print.a3
 
 
@@ -136,7 +140,7 @@ as.a3 <- function(x) {
 #' @export
 
 as.a3.default <- function(x) {
-  inherits_check(x, "list")
+  check_inherits(x, "list")
   as.a3.list(x)
 } # /rtemisbio::as.a3
 
@@ -153,17 +157,17 @@ as.a3.default <- function(x) {
 
 as.a3.list <- function(x) {
   # Check types
-  inherits_check(x, "list")
-  inherits_check(x$Sequence, "character")
-  inherits_check(x$Annotations, "list")
-  inherits_check(x$Annotations$Site, "list")
-  inherits_check(x$Annotations$Region, "list")
-  inherits_check(x$Annotations$PTM, "list")
-  inherits_check(x$Annotations$Cleavage_site, "list")
-  inherits_check(x$Annotations$Variant, "list")
-  inherits_check(x$UniprotID, "character")
-  inherits_check(x$Description, "character")
-  inherits_check(x$Reference, "character")
+  check_inherits(x, "list")
+  check_inherits(x$Sequence, "character")
+  check_inherits(x$Annotations, "list")
+  check_inherits(x$Annotations$Site, "list")
+  check_inherits(x$Annotations$Region, "list")
+  check_inherits(x$Annotations$PTM, "list")
+  check_inherits(x$Annotations$Cleavage_site, "list")
+  check_inherits(x$Annotations$Variant, "list")
+  check_inherits(x$UniprotID, "character")
+  check_inherits(x$Description, "character")
+  check_inherits(x$Reference, "character")
 
   # Create `a3` object
   a3 <- a3(
@@ -177,20 +181,20 @@ as.a3.list <- function(x) {
     description = x$Description,
     reference = x$Reference
   )
-  return(a3)
+  a3
 } # /rtemisbio::as.a3.list
 
 
 #' Plot method for `a3` object
 #'
 #' @param x `a3` object.
-#' @param ... Additional arguments passed to [rtemis::dplot3_protein].
+#' @param ... Additional arguments passed to [rtemis::draw_protein].
 #'
 #' @author EDG
 #' @export
 
 plot.a3 <- function(x, ...) {
-  dplot3_protein(x, ...)
+  draw_protein(x, ...)
 } # /rtemisbio::plot.a3
 
 

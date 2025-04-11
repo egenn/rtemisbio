@@ -1,6 +1,7 @@
 Package: rtemisbio
 Title: rtemis Bio-informatics
-Version: 0.2.2
+Version: 0.3.0
+Date: 2025-04-10
 Authors@R: 
     person(given = "E.D.", family = "Gennatas", role = c("aut", "cre"),
            email = "gennatas@gmail.com",
@@ -21,3 +22,4 @@ Suggests:
 Additional_repositories:
     https://egenn.r-universe.dev
 Config/testthat/edition: 3
+URL: https://egenn.github.io/rtemisbio/

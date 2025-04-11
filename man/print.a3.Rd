@@ -11,6 +11,9 @@
 
 \item{...}{Not used.}
 }
+\value{
+\code{a3} object, invisibly.
+}
 \description{
 Print method for \code{a3} object
 }

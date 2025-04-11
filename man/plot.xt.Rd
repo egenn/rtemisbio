@@ -9,7 +9,10 @@
 \arguments{
 \item{x}{\code{xt} object.}
 
-\item{...}{Additional arguments passed to \link[rtemis:dplot3_xt]{rtemis::dplot3_xt}.}
+\item{...}{Additional arguments passed to \link[rtemis:draw_xt]{rtemis::draw_xt}.}
+}
+\value{
+Plotly object.
 }
 \description{
 Plot method for \code{xt} object

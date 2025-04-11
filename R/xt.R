@@ -24,8 +24,9 @@
 #' @param description Character: Description of the data / experiment.
 #' @param reference Character: Link to reference (journal publication, preprint, etc.)
 #'
-#' @author EDG
 #' @return `xt` object
+#' 
+#' @author EDG
 #' @export
 
 toxt <- function(
@@ -42,14 +43,14 @@ toxt <- function(
     description = NULL,
     reference = NULL) {
   # Check types
-  # inherits_check(x, "list")
-  # inherits_check(y, "list")
-  # inherits_check(y2, "list")
-  inherits_check(xunits, "character")
-  inherits_check(yunits, "character")
-  inherits_check(y2units, "character")
-  inherits_check(description, "character")
-  inherits_check(reference, "character")
+  # check_inherits(x, "list")
+  # check_inherits(y, "list")
+  # check_inherits(y2, "list")
+  check_inherits(xunits, "character")
+  check_inherits(yunits, "character")
+  check_inherits(y2units, "character")
+  check_inherits(description, "character")
+  check_inherits(reference, "character")
 
   if (!is.list(x)) {
     x <- list(x)
@@ -88,14 +89,17 @@ toxt <- function(
   )
 
   class(xt) <- c("xt", "list")
-  return(xt)
+  xt
 } # /rtemisbio::toxt
 
 #' Print method for `xt` object
 #'
 #' @method print xt
+#' 
 #' @param x `xt` object.
 #' @param ... Not used.
+#' 
+#' @return `xt` object, invisibly.
 #'
 #' @author EDG
 #' @export
@@ -159,6 +163,7 @@ print.xt <- function(x, head.n = 10, ...) {
   if (!is.null(x$Reference)) {
     cat("  Reference:", hilite(x$Reference), "\n")
   }
+  invisible(x)
 } # /rtemisbio::print.xt
 
 
@@ -166,8 +171,9 @@ print.xt <- function(x, head.n = 10, ...) {
 #'
 #' @param x Object to convert to `xt`.
 #'
-#' @author EDG
 #' @return `xt` object.
+#' 
+#' @author EDG
 #' @export
 
 as.xt <- function(x) {
@@ -178,12 +184,13 @@ as.xt <- function(x) {
 #'
 #' @param x Object to convert to `xt`.
 #'
-#' @author EDG
 #' @return `xt` object.
+#' 
+#' @author EDG
 #' @export
 
 as.xt.default <- function(x) {
-  inherits_check(x, "list")
+  check_inherits(x, "list")
   as.xt.list(x)
 } # /rtemisbio::as.xt
 
@@ -193,21 +200,22 @@ as.xt.default <- function(x) {
 #' @param x List: Named list with elements `x`, `y`, `y2`, `xunits`, `yunits`, `y2units`, 
 #' `Description`, `Reference`.
 #'
-#' @author EDG
 #' @return `xt` object.
+#' 
+#' @author EDG
 #' @export
 
 as.xt.list <- function(x) {
   # Check types
-  inherits_check(x, "list")
-  # inherits_check(x$x, "list")
-  # inherits_check(x$y, "list")
-  # inherits_check(x$y2, "list")
-  inherits_check(x$xunits, "character")
-  inherits_check(x$yunits, "character")
-  inherits_check(x$y2units, "character")
-  inherits_check(x$Description, "character")
-  inherits_check(x$Reference, "character")
+  check_inherits(x, "list")
+  # check_inherits(x$x, "list")
+  # check_inherits(x$y, "list")
+  # check_inherits(x$y2, "list")
+  check_inherits(x$xunits, "character")
+  check_inherits(x$yunits, "character")
+  check_inherits(x$y2units, "character")
+  check_inherits(x$Description, "character")
+  check_inherits(x$Reference, "character")
 
   # Create `xt` object
   xt <- toxt(
@@ -223,21 +231,22 @@ as.xt.list <- function(x) {
     description = x$Description,
     reference = x$Reference
   )
-  
-  return(xt)
+  xt
 } # /rtemisbio::as.xt.list
 
 
 #' Plot method for `xt` object
 #'
 #' @param x `xt` object.
-#' @param ... Additional arguments passed to [rtemis::dplot3_xt].
+#' @param ... Additional arguments passed to [rtemis::draw_xt].
+#' 
+#' @return Plotly object.
 #'
 #' @author EDG
 #' @export
 
 plot.xt <- function(x, ...) {
-  dplot3_xt(x, ...)
+  draw_xt(x, ...)
 } # /rtemisbio::plot.xt
 
 #' Aggregate method for `xt` object
@@ -250,8 +259,9 @@ plot.xt <- function(x, ...) {
 #'
 #' @author EDG
 #' @export
+
 aggregate.xt <- function(x, groupname, fn = mean, backend = getOption("rt.backend", "base"), ...) {
-  inherits_check(x, "xt")
+  check_inherits(x, "xt")
   # Get name of fn
   fn_name <- deparse(substitute(fn))
   # Aggregate all y and y2 timeseries by grouping in `group`
@@ -317,11 +327,18 @@ aggregate.xt <- function(x, groupname, fn = mean, backend = getOption("rt.backen
 #' @param backend Character: "base", "data.table", or "dplyr"; backend to use for aggregation.
 #' @param ... Additional arguments passed to `fn`.
 #'
+#' @return data.frame with columns for group and summary statistic.
+#' 
 #' @author EDG
 #' @export
-#' @return data.frame with columns for group and summary statistic.
-light_dark_ratio <- function(x, groupname = "Lights", fn = mean, backend = getOption("rt.backend", "data.table"), ...) {
+
+light_dark_ratio <- function(
+    x,
+    groupname = "Lights",
+    fn = mean,
+    backend = getOption("rt.backend", "data.table"),
+    ...) {
   # Check types
-  inherits_check(x, "xt")
+  check_inherits(x, "xt")
   aggregate(x, groupname = groupname, fn = fn, backend = backend, ...)
 } # /rtemisbio::light_dark_ratio

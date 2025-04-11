@@ -11,6 +11,9 @@
 
 \item{...}{Not used.}
 }
+\value{
+\code{xt} object, invisibly.
+}
 \description{
 Print method for \code{xt} object
 }

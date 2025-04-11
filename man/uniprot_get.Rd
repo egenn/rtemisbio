@@ -19,7 +19,7 @@ Default = "https://rest.uniprot.org/uniprotkb"}
 \item{verbose}{Logical: If TRUE, print messages to console}
 }
 \value{
-List with two elements: Annotation & Sequence
+List with three elements: Identifier, Annotation, and Sequence.
 }
 \description{
 Get protein sequence from UniProt

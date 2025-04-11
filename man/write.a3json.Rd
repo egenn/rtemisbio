@@ -11,6 +11,9 @@ write.a3json(x, filepath, overwrite = FALSE)
 
 \item{filepath}{Character: Path to save JSON file.}
 }
+\value{
+Nothing. Writes JSON file.
+}
 \description{
 Write \code{a3} object to JSON file
 }
